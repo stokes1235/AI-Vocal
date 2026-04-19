@@ -1,0 +1,21 @@
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# TTS 模型资源不纳入版本库（GitHub 单文件 100MB 限制）；安装步骤见 README.md
+app/src/main/assets/vits-icefall-zh-aishell3/*
+!app/src/main/assets/vits-icefall-zh-aishell3/.gitkeep
+app/src/main/assets/vits-vctk/*
+!app/src/main/assets/vits-vctk/.gitkeep

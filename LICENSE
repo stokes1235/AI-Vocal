@@ -1,0 +1,83 @@
+第三方许可与署名 — 随应用分发的语音合成模型
+Third-party licenses and attributions — bundled text-to-speech models
+================================================================================
+
+本文件说明本应用在 APK 中打包的预训练 TTS 资源之来源与许可摘要。
+完整法律条款以各上游项目与数据集官方页面为准；如有冲突，以上游为准。
+
+This file documents the origin and license summary of pre-trained TTS assets
+shipped inside this application. For authoritative terms, see each upstream
+project and dataset page; upstream terms prevail in case of discrepancy.
+
+--------------------------------------------------------------------------------
+1) AISHELL3 中文多说话人模型（174 speakers）
+   vits-icefall-zh-aishell3
+--------------------------------------------------------------------------------
+
+- 本仓库中的路径（示例） / Paths in this project (example):
+  app/src/main/assets/vits-icefall-zh-aishell3/
+
+- 文档与索引页 / Documentation index:
+  https://k2-fsa.github.io/sherpa/onnx/tts/pretrained_models/vits.html
+
+- 预训练包下载（sherpa-onnx 发布物） / Pre-trained bundle (sherpa-onnx release):
+  https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/vits-icefall-zh-aishell3.tar.bz2
+
+- 上游说明 / Upstream description:
+  该模型使用 icefall 在 AISHELL-3 语料上训练；推理格式由 sherpa-onnx 分发。
+  Trained with icefall on the AISHELL-3 corpus; distributed for inference via sherpa-onnx.
+
+- 训练数据 / Training data (OpenSLR SLR93 — AISHELL-3):
+  https://www.openslr.org/93/
+  OpenSLR 标注的许可 / License stated on OpenSLR: Apache License, Version 2.0
+
+- 相关软件仓库（常见为 Apache-2.0，请以下游仓库内 LICENSE 为准） /
+  Related code repositories (typically Apache-2.0; confirm in each repo’s LICENSE file):
+  - https://github.com/k2-fsa/sherpa-onnx
+  - https://github.com/k2-fsa/icefall
+
+--------------------------------------------------------------------------------
+2) VCTK 英文多说话人模型（109 speakers）
+   vits-vctk
+--------------------------------------------------------------------------------
+
+- 本仓库中的路径（示例） / Paths in this project (example):
+  app/src/main/assets/vits-vctk/
+
+- 文档与索引页 / Documentation index:
+  https://k2-fsa.github.io/sherpa/onnx/tts/pretrained_models/vits.html
+
+- 预训练包下载（sherpa-onnx 发布物） / Pre-trained bundle (sherpa-onnx release):
+  https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/vits-vctk.tar.bz2
+
+- 上游说明 / Upstream description（摘自上述文档页面 / per sherpa documentation）:
+  由 VITS 作者在 VCTK 数据集上训练的 checkpoint 转换而来。
+  Converted from pretrained weights trained by the VITS authors on the VCTK dataset.
+  - VITS: https://github.com/jaywalnut310/vits （仓库内 MIT License / MIT License in repository）
+  - 预训练权重链接见 sherpa 文档页面 / Pretrained checkpoint link on sherpa doc page
+
+- 语音数据语料 / Speech corpus (CSTR VCTK):
+  https://datashare.ed.ac.uk/handle/10283/2950
+  数据集所附许可文本标明 / License file in dataset distribution states:
+  Creative Commons Attribution 4.0 International (CC BY 4.0)
+  https://creativecommons.org/licenses/by/4.0/legalcode
+
+  引用信息示例 / Example citation (from Edinburgh DataShare metadata):
+  Yamagishi, Junichi; Veaux, Christophe; MacDonald, Kirsten. (2019). CSTR VCTK Corpus:
+  English Multi-speaker Corpus for CSTR Voice Cloning Toolkit (version 0.92), [sound].
+  University of Edinburgh. The Centre for Speech Technology Research (CSTR).
+  https://doi.org/10.7488/ds/2645
+
+--------------------------------------------------------------------------------
+3) 运行时依赖提示（未列入上述资源目录时仍可能适用）
+   Runtime dependency note
+--------------------------------------------------------------------------------
+
+本应用通过 Gradle 依赖 com.k2fsa.sherpa:sherpa-onnx（或等价构件）加载原生推理库；
+该库通常以 Apache-2.0 发布，请查阅 Maven 构件附带的 POM 与上游仓库 LICENSE。
+
+This app may load sherpa-onnx native libraries via Gradle; sherpa-onnx is commonly
+Apache-2.0 — verify the POM and upstream LICENSE.
+
+================================================================================
+（文件结束 / End of file）
