@@ -1,5 +1,19 @@
 <resources>
-    <string name="app_name">VN 本地 OCR</string>
+    <string name="app_name">Visual Novel Vocal</string>
+    <string name="main_about_button">关于</string>
+    <string name="main_swipe_settings_hint">向右滑动修改更多设置</string>
+    <string name="settings_drawer_title">更多设置</string>
+    <string name="settings_operation_instructions">操作说明</string>
+    <string name="settings_edit_phrases">编辑短语纠错（ocr_rule_phrases）</string>
+    <string name="settings_edit_whitelist">编辑白名单（ocr_rule_whitelist）</string>
+    <string name="settings_rules_saved">规则已保存，后续识别将使用新内容</string>
+    <string name="settings_phrases_dialog_title">短语纠错</string>
+    <string name="settings_whitelist_dialog_title">白名单</string>
+    <string name="dialog_save">保存</string>
+    <string name="dialog_cancel">取消</string>
+    <string name="about_title">关于 AIVocal</string>
+    <string name="first_launch_about_heading">请先阅读</string>
+    <string name="first_launch_about_close">关闭</string>
     <string name="region_select">框选主文本区域</string>
     <string name="region_select_name">框选人名区域</string>
     <string name="overlay_region_title_main">拖动调整：主文本 OCR 区域</string>
