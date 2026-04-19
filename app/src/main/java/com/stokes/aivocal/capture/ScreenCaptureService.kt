@@ -32,6 +32,7 @@ import com.stokes.aivocal.ocr.OcrLanguagePreferences
 import com.stokes.aivocal.ocr.OcrEngine
 import com.stokes.aivocal.ocr.OcrResultBus
 import com.stokes.aivocal.ocr.OcrResultOverlayService
+import com.stokes.aivocal.ocr.OcrTimingPreferences
 import com.stokes.aivocal.region.NameRegionPreferences
 import com.stokes.aivocal.tts.TtsEngineKind
 import com.stokes.aivocal.tts.TtsReadAloudPreferences
@@ -82,10 +83,12 @@ class ScreenCaptureService : Service() {
     private val voiceMappingPrefs by lazy { VoiceMappingPreferences(this) }
     private val ttsReadAloudPrefs by lazy { TtsReadAloudPreferences(this) }
     private val ocrFloatOverlayPrefs by lazy { OcrFloatOverlayPreferences(this) }
+    private val ocrTimingPrefs by lazy { OcrTimingPreferences(this) }
     private val ocrTextRuleCorrector get() = (application as MyApplication).ocrTextRuleCorrector
     private var voiceCollectJob: Job? = null
     private var readAloudCollectJob: Job? = null
     private var floatOverlayCollectJob: Job? = null
+    private var timingCollectJob: Job? = null
 
     @Volatile
     private var cachedReadAloudEnabled: Boolean = true
@@ -116,6 +119,12 @@ class ScreenCaptureService : Service() {
     private var lastNameEmittedNorm = ""
 
     private val ttsController get() = (application as MyApplication).ttsController
+
+    @Volatile
+    private var cachedOcrIntervalMs: Int = OcrTimingPreferences.DEFAULT_INTERVAL_MS
+
+    @Volatile
+    private var cachedOcrStableMs: Int = OcrTimingPreferences.DEFAULT_STABLE_MS
 
     @Volatile
     private var released = false
@@ -210,6 +219,16 @@ class ScreenCaptureService : Service() {
                     }
                 }
 
+                timingCollectJob = serviceScope.launch {
+                    ocrTimingPrefs.timingFlow.collect { (intervalMs, stableMs) ->
+                        synchronized(this@ScreenCaptureService) {
+                            if (released) return@collect
+                            cachedOcrIntervalMs = intervalMs
+                            cachedOcrStableMs = stableMs
+                        }
+                    }
+                }
+
                 lastResolvedSpeakerId = runBlocking {
                     voiceMappingPrefs.migrateFromLegacyIfNeeded()
                     val engine = ocrLanguagePrefs.getEngine()
@@ -296,7 +315,7 @@ class ScreenCaptureService : Service() {
         try {
             if (released) return
             val now = SystemClock.elapsedRealtime()
-            if (now - lastOcrElapsed < OCR_INTERVAL_MS) return
+            if (now - lastOcrElapsed < cachedOcrIntervalMs) return
             lastOcrElapsed = now
 
             val full = image.toBitmapArgb8888()
@@ -322,7 +341,7 @@ class ScreenCaptureService : Service() {
             mainCropped.recycle()
 
             val nr = cachedNameRegion
-            if (nr != null && now - lastNameOcrElapsed >= NAME_OCR_INTERVAL_MS) {
+            if (nr != null && now - lastNameOcrElapsed >= cachedOcrIntervalMs) {
                 lastNameOcrElapsed = now
                 val nameRect = nr.toPixelRect(w, h)
                 if (nameRect.width() > 1 && nameRect.height() > 1) {
@@ -384,7 +403,7 @@ class ScreenCaptureService : Service() {
             nameStableSinceElapsed = t
             return null
         }
-        if (t - nameStableSinceElapsed >= OCR_STABLE_MS) {
+        if (t - nameStableSinceElapsed >= cachedOcrStableMs) {
             lastNameEmittedNorm = n
             return n
         }
@@ -405,7 +424,7 @@ class ScreenCaptureService : Service() {
     }
 
     /**
-     * 同一归一化内容需持续至少 [OCR_STABLE_MS] 才输出；与上次已输出内容 [ocrTextRoughlySame] 则不重复输出。
+     * 同一归一化内容需持续至少 [cachedOcrStableMs] 才输出；与上次已输出内容 [ocrTextRoughlySame] 则不重复输出。
      */
     private fun considerEmittingOcr(raw: String): String? {
         val n = normalizeOcrText(raw)
@@ -417,7 +436,7 @@ class ScreenCaptureService : Service() {
             ocrStableSinceElapsed = now
             return null
         }
-        if (now - ocrStableSinceElapsed >= OCR_STABLE_MS) {
+        if (now - ocrStableSinceElapsed >= cachedOcrStableMs) {
             lastOcrEmittedNorm = n
             return n
         }
@@ -450,6 +469,8 @@ class ScreenCaptureService : Service() {
         readAloudCollectJob = null
         floatOverlayCollectJob?.cancel()
         floatOverlayCollectJob = null
+        timingCollectJob?.cancel()
+        timingCollectJob = null
         ttsController.stop()
         serviceJob.cancel()
 
@@ -488,6 +509,8 @@ class ScreenCaptureService : Service() {
                     readAloudCollectJob = null
                     floatOverlayCollectJob?.cancel()
                     floatOverlayCollectJob = null
+                    timingCollectJob?.cancel()
+                    timingCollectJob = null
                     runCatching { (application as MyApplication).ttsController.stop() }
                     serviceJob.cancel()
                     OcrResultOverlayService.stop(this)
@@ -539,11 +562,6 @@ class ScreenCaptureService : Service() {
     companion object {
         private const val CHANNEL_ID = "screen_capture"
         private const val NOTIFICATION_ID = 1001
-        private const val OCR_INTERVAL_MS = 300L
-        /** 人名区 OCR 与主区同频，便于同一帧内更新声线与展示前缀。 */
-        private const val NAME_OCR_INTERVAL_MS = OCR_INTERVAL_MS
-        /** 归一化识别结果连续不变至少该时长后才输出。 */
-        private const val OCR_STABLE_MS = 400L
 
         const val ACTION_START = "com.stokes.aivocal.capture.START"
         const val ACTION_STOP = "com.stokes.aivocal.capture.STOP"

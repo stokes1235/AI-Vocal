@@ -6,7 +6,15 @@ plugins {
 }
 
 android {
-    namespace = "com.example.myapplication1"
+    signingConfigs {
+        create("release") {
+            storeFile = file("D:\\MyApplication1\\my_pw")
+            storePassword = "Stokes1235"
+            keyAlias = "framework"
+            keyPassword = "Freakneat"
+        }
+    }
+    namespace = "com.stokes.aivocal"
     compileSdk {
         version = release(36) {
             minorApiLevel = 1
@@ -14,7 +22,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.myapplication1"
+        applicationId = "com.stokes.aivocal"
         minSdk = 32
         targetSdk = 36
         versionCode = 1
@@ -35,6 +43,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
@@ -43,6 +52,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 

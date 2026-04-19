@@ -1,9 +1,18 @@
 <resources>
     <string name="app_name">Visual Novel Vocal</string>
+    <string name="action_bar_menu_swipe_hint">向右滑动可打开更多设置</string>
     <string name="main_about_button">关于</string>
     <string name="main_swipe_settings_hint">向右滑动修改更多设置</string>
     <string name="settings_drawer_title">更多设置</string>
     <string name="settings_operation_instructions">操作说明</string>
+    <string name="settings_ocr_timing">识别速度调整</string>
+    <string name="settings_ocr_timing_dialog_title">识别速度调整</string>
+    <string name="settings_ocr_timing_hint_interval">识别屏幕间隔（毫秒，留空不改）</string>
+    <string name="settings_ocr_timing_hint_stable">确认语句稳定时间（毫秒，留空不改）</string>
+    <string name="toast_ocr_interval_invalid">请输入150~800之间的整数，推荐200~500</string>
+    <string name="toast_ocr_stable_invalid">请输入200~1200之间的整数，推荐300~600</string>
+    <string name="toast_ocr_timing_ratio_invalid">两者比例应在1.1~2.5之间</string>
+    <string name="toast_ocr_timing_saved">识别参数已保存</string>
     <string name="settings_edit_phrases">编辑短语纠错（ocr_rule_phrases）</string>
     <string name="settings_edit_whitelist">编辑白名单（ocr_rule_whitelist）</string>
     <string name="settings_rules_saved">规则已保存，后续识别将使用新内容</string>
@@ -38,7 +47,8 @@
     <string name="voice_settings_scope_chinese">当前为中文识别：使用 aishell3 声线配置，声线id从0~173共174种（与英文相互独立）</string>
     <string name="voice_settings_scope_english">当前为英文识别：使用 VCTK 声线配置，声线id从0~108共109种（与中文相互独立）</string>
     <string name="voice_default_sid_label">默认 speaker id</string>
-    <string name="voice_person_name_hint">人名（OCR 包含即匹配）</string>
+    <string name="voice_person_name_hint">标准人名（命中后用于展示）</string>
+    <string name="voice_person_aliases_hint">别名（可选），OCR 变体用逗号、顿号或分号分隔</string>
     <string name="voice_speaker_id_hint">声线 id</string>
     <string name="voice_add_mapping">添加人名映射</string>
     <string name="voice_save">保存声线配置</string>
@@ -54,7 +64,7 @@
     <string name="capture_stop">停止</string>
     <string name="ocr_float_title">实时识别</string>
     <string name="ocr_float_empty">（暂无识别结果）</string>
-    <string name="bubble_action_region">框选区域</string>
+    <string name="bubble_action_region">框选文本区域</string>
     <string name="bubble_action_start">开始识别</string>
     <string name="bubble_action_stop">结束识别</string>
     <string name="bubble_ball_content_desc">OCR 快捷菜单</string>

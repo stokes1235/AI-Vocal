@@ -79,6 +79,14 @@
                 android:text="@string/settings_operation_instructions" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_ocr_timing"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/settings_ocr_timing" />
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_edit_phrases"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="match_parent"

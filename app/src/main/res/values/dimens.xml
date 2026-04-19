@@ -2,4 +2,6 @@
 <resources>
     <!-- 约为 textAppearanceBodyMedium 默认字号的 2 倍（常见 14sp→28sp），用于 TTS 开关与声线区 -->
     <dimen name="text_voice_tts_section_doubled">20sp</dimen>
+    <!-- 关于页正文：相对 bodyMedium 约放大一倍 -->
+    <dimen name="text_about_body">28sp</dimen>
 </resources>

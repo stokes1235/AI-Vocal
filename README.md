@@ -1,6 +1,6 @@
-# MyApplication1（AI Vocal）
+# AIVocal（Ai Vocal）
 
-Android 应用源码。预训练 TTS 模型体积较大，**不包含在本仓库中**，克隆后请按下方步骤下载并解压到 `app/src/main/assets/`。
+Android 应用源码，包名 `com.stokes.aivocal`。预训练 TTS 模型体积较大，**不包含在本仓库中**，克隆后请按下方步骤下载并解压到 `app/src/main/assets/`。
 
 ## 环境
 
@@ -46,6 +46,7 @@ cd ../../..
 
 解压完成后用 Android Studio 打开工程并构建即可。
 
-## 许可
+## 许可与关于
 
-第三方模型与数据集的说明见仓库根目录 [LICENSE](LICENSE)。
+- 第三方模型与数据集的完整说明见仓库根目录 [LICENSE](LICENSE)。
+- 安装应用后，主界面底部 **「关于」** 中有隐私、权限、数据是否出设备、版本号、仓库链接及第三方许可**摘要**（与 LICENSE 第 4 节一致）；Release 构建默认关闭详细调试日志，减少敏感信息进入 logcat。
