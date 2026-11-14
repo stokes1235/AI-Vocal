@@ -46,6 +46,17 @@ cd ../../..
 
 解压完成后用 Android Studio 打开工程并构建即可。
 
+## Release 签名密码
+
+Release 构建从环境变量读取两个密码：
+
+- `AI_VOCAL_STORE_PASSWORD`：现有 keystore 的密码。
+- `AI_VOCAL_KEY_PASSWORD`：现有签名密钥的密码。
+
+在启动 Android Studio 或 Gradle 前，使用本机环境或 CI 的私密变量设置这两个值；不要把实际密码写入源码、脚本或提交到仓库。现有 keystore 路径与 key alias 保持不变，不会生成或更换签名密钥。
+
+缺少任一密码（包括空值或纯空白值）时，Release 构建会失败。Debug 构建和工程同步不需要这两个变量。
+
 ## 许可与关于
 
 - 第三方模型与数据集的完整说明见仓库根目录 [LICENSE](LICENSE)。

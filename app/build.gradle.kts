@@ -5,13 +5,17 @@ plugins {
     alias(libs.plugins.android.application)
 }
 
+// Supply these through the local build environment or CI secret settings.
+val releaseStorePassword = providers.environmentVariable("AI_VOCAL_STORE_PASSWORD")
+val releaseKeyPassword = providers.environmentVariable("AI_VOCAL_KEY_PASSWORD")
+
 android {
     signingConfigs {
         create("release") {
             storeFile = file("D:\\MyApplication1\\my_pw")
-            storePassword = "Stokes1235"
+            storePassword = releaseStorePassword.orNull
             keyAlias = "framework"
-            keyPassword = "Freakneat"
+            keyPassword = releaseKeyPassword.orNull
         }
     }
     namespace = "com.stokes.aivocal"
@@ -54,6 +58,25 @@ android {
         viewBinding = true
         buildConfig = true
     }
+}
+
+// Keep release credentials optional for sync/debug, but required before release work.
+val validateReleaseSigningPasswords = tasks.register("validateReleaseSigningPasswords") {
+    doLast {
+        if (releaseStorePassword.orNull.isNullOrBlank() ||
+            releaseKeyPassword.orNull.isNullOrBlank()
+        ) {
+            throw GradleException(
+                "Release signing requires AI_VOCAL_STORE_PASSWORD and AI_VOCAL_KEY_PASSWORD."
+            )
+        }
+    }
+}
+
+tasks.matching {
+    it.name == "preReleaseBuild" || it.name == "validateSigningRelease"
+}.configureEach {
+    dependsOn(validateReleaseSigningPasswords)
 }
 
 tasks.withType<KotlinCompile>().configureEach {
